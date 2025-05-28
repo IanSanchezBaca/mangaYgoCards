@@ -1,4 +1,6 @@
+############################################################
 ### This file should maybe handle all of the image editing
+############################################################
 
 from PIL import Image #This is used to open images
 from PIL import ImageDraw # this is used to draw to images

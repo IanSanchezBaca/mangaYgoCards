@@ -1,4 +1,6 @@
+####################################
 ### This file handles the file stuff
+####################################
 
 def openFile(filename):
     

@@ -1,4 +1,7 @@
+#########################################################
 ### This searches the website for the stuff that I need
+#########################################################
+
 import requests as req
 from bs4 import BeautifulSoup as soup
 
