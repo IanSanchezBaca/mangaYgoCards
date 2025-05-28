@@ -37,27 +37,28 @@ def searchCard(name: str):
         match titles[cardTypeIndex + 1]:
             case "Monster Card":
                 # print("this is a Monster Card")
-                monster = monsterCardo(titles)
-                monster.append(lore)
+                card = monsterCardo(titles)
+                card.append(lore)
+                # print(card)
             case "Spell Card":
-                print("this is a Spell Card")
+                card = spelltrapCard(titles, "Spell")
+                card.append(lore)
+                # print(card)
             case "Trap Card":
-                print("this is a Trap Card")
+                card = spelltrapCard(titles, "Trap")
+                card.append(lore)
+                # print(card)
     else:
         ### shouldn't be able get here as card name that doesnt exists wont work anyway
         print(f"could not find index for {name}, maybe doesnt exist.")
         exit(-1)
 
-        
-    with open("output.txt", "w") as f:
-        print(titles, file=f)
+    print(card)
 
-    print(monster)
+    # print(monster)
 
 def monsterCardo(titles):
     monster = []
-
-    # print(cardName := titles[0])
     cardName = titles[0]
     monster.append(cardName)
 
@@ -84,7 +85,7 @@ def monsterCardo(titles):
     monster.append(types)
 
     ### get level/rank
-    print("level/rank: ", cardLevel := titles[Index + i + 1].split()[1])
+    cardLevel = titles[Index + i + 1].split()[1]
     monster.append(cardLevel)
 
     ### get atk/def
@@ -99,6 +100,25 @@ def monsterCardo(titles):
     monster.append(stats)
 
     return monster
+
+def spelltrapCard(titles, type):
+    card = []
+    ### name
+    card.append(titles[0])
+
+    ### type
+    card.append(type)
+
+    ### property?
+    if (Index := getIndex(titles, "Property")):
+        card.append(titles[Index+1])
+
+    return card
+    
+
+
+
+    
 
 def getIndex(titles, type):
     try:
@@ -116,15 +136,16 @@ def getIndex(titles, type):
 
 
 def main():
-    # searchCard("7084129") # magicians rod
-    # searchCard("Dark_Magician")
-    # searchCard("Monster_Reborn") 
-    # searchCard("Skill_Drain") 
-    # searchCard("Lunalight_Tiger")
-    # searchCard("Divine_Arsenal_AA-ZEUS_-_Sky_Thunder")
+    searchCard("7084129") # magicians rod
+    searchCard("Dark_Magician")
+    searchCard("Monster_Reborn") 
+    searchCard("Skill_Drain") 
+    searchCard("Solemn_Judgment")
+    searchCard("Lunalight_Tiger")
+    searchCard("Divine_Arsenal_AA-ZEUS_-_Sky_Thunder")
     searchCard("34001672") # gobonga
-    # searchCard("Windwitch_-_Snow_Bell")
-    # searchCard("Hallohallo")
+    searchCard("Windwitch_-_Snow_Bell")
+    searchCard("Hallohallo")
     
 if __name__ == "__main__":
     main()
