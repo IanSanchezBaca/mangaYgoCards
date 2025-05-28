@@ -21,7 +21,6 @@ def main():
 
     mage.save("tempimg.png", "PNG")
 
-
 def outerBorder(card, width, height): # creates the border on the outer side of the card
     ### making the outer border
     # the top border
@@ -64,27 +63,15 @@ def imageBorder(card, width, height):
         for j in range(640):
             card.putpixel((715 + i, 205 + j), (0,0,0))
     
-
-
 def createTemplate():
     width = 813
     height = 1185
-
-
     card = Image.new('RGB', (width, height), color='white')
-
     # brush = ImageDraw.Draw(card)
-
     outerBorder(card, width, height)
     imageBorder(card, width, height)
-
-
-
     # card.show()
-
     card.save("template.png")
-
-
 
 if __name__ == "__main__":
     # main()
