@@ -19,7 +19,8 @@ def searchCard(name: str):
         res.raise_for_status() ### this should raise an error if status is not 200
     except req.exceptions.RequestException as e:
         print(f"Error fetching page: {e}")
-        exit(-1)
+        print("If this is an AltArt it wont work")
+        return
 
     s = soup(res.text, 'html.parser')
     tags = s.find_all(attrs={"title": True})
@@ -38,7 +39,8 @@ def searchCard(name: str):
             case "Monster Card":
                 # print("this is a Monster Card")
                 card = monsterCardo(titles)
-                card.append(lore)
+                if(card):
+                    card.append(lore)
                 # print(card)
             case "Spell Card":
                 card = spelltrapCard(titles, "Spell")
@@ -53,9 +55,10 @@ def searchCard(name: str):
         print(f"could not find index for {name}, maybe doesnt exist.")
         exit(-1)
 
-    print(card)
 
-    # print(monster)
+    # print(card)
+
+    return card ### comment this back in
 
 def monsterCardo(titles):
     monster = []
@@ -68,7 +71,7 @@ def monsterCardo(titles):
         cardAttribute = titles[Index+1]
         monster.append(cardAttribute)
     else:
-        print("Could not find attribute.")
+        print(f"Could not find attribute of {cardName}")
         exit(-1)
 
     ### get types
@@ -76,12 +79,21 @@ def monsterCardo(titles):
     # numofTypes = i
     types = []
     if (Index := getIndex(titles, "Type")):
+
         while titles[Index + i] != "Level" and titles[Index + i] != "Rank":
             temp = titles[Index + i].split()[0]
+           
+            if temp == "Link":
+                print(f"Links dont work: {cardName}")
+                return
+            
             types.append(temp)
             i = i + 1
         # numofTypes = i - 1
     
+    # print(types)
+    # exit(-1)
+
     monster.append(types)
 
     ### get level/rank
@@ -114,11 +126,6 @@ def spelltrapCard(titles, type):
         card.append(titles[Index+1])
 
     return card
-    
-
-
-
-    
 
 def getIndex(titles, type):
     try:
@@ -128,12 +135,6 @@ def getIndex(titles, type):
     except ValueError:
         print("'Card type' not found in the list.")
         return -1
-
-
-
-
-
-
 
 def main():
     searchCard("7084129") # magicians rod
