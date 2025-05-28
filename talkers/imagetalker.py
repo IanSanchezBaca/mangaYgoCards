@@ -1,9 +1,23 @@
-############################################################
-### This file should maybe handle all of the image editing
-############################################################
-
+#####################################################################
+### This file should maybe probably handle all of the image editing
+#####################################################################
 from PIL import Image #This is used to open images
 from PIL import ImageDraw # this is used to draw to images
+
+
+
+
+def doStuff(card):
+    # name = ""
+    if card[1] == "Spell" or card[1] == "Trap":
+        # name = card[0]
+        print("spell/trap")
+    else:
+        print("monster cardo")
+    
+    # print(name)
+
+
 
 
 

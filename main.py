@@ -3,7 +3,8 @@
 ##################################################
 
 import sys ### using this for argv
-from talkers import filetalker, webtalker
+import ast
+from talkers import filetalker, webtalker, imagetalker
 
 def main():
     # if len(sys.argv) < 2:
@@ -12,26 +13,37 @@ def main():
     # ydk = sys.argv[1]
     # filetalker.openFile(ydk)
 
-
-    ydkdeck = filetalker.openFile("template/Goblins.ydk")
+    # ydkdeck = filetalker.openFile("template/3cards.ydk")
+    # ydkdeck = filetalker.openFile("template/Goblins.ydk")
     # ydkdeck = filetalker.openFile("template/link.ydk")
     # ydkdeck = filetalker.openFile("template/altart.ydk")
 
+    deck = testing()
+    # deck = []
+    # for card in ydkdeck:
+    #     deck.append(webtalker.searchCard(card))
 
-    deck = []
-    for card in ydkdeck:
-        deck.append(webtalker.searchCard(card))
 
-    
+    for card in deck:
+        imagetalker.doStuff(card)
 
-    # if deck:
-    #     with open("template/tmpDB.txt", "w", encoding="utf-8") as f:
-    #         for item in deck:
-    #             f.write(str(item) + "\n")
 
+def testing():
+    cards = []
+    with open("template/3cards.db", 'r', encoding='utf-8') as file:
+        for line in file:
+            if line.strip():
+                card = ast.literal_eval(line.strip())
+                cards.append(card)
+
+    return cards
     
 
 if __name__ == "__main__":
     main()
 
-    
+### monster card format
+# name, attr, types(vector), lvl, atk/def(vector), effect
+
+### spell/trap card format
+# name, spell/trap, type, effect
