@@ -25,7 +25,9 @@ def main():
     
 
     # if deck:
-    #     print(deck)
+    #     with open("template/tmpDB.txt", "w", encoding="utf-8") as f:
+    #         for item in deck:
+    #             f.write(str(item) + "\n")
 
     
 
