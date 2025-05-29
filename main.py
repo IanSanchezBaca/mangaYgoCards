@@ -19,13 +19,18 @@ def main():
     # ydkdeck = filetalker.openFile("template/altart.ydk")
 
     deck = testing()
+    
     # deck = []
     # for card in ydkdeck:
     #     deck.append(webtalker.searchCard(card))
 
 
     for card in deck:
-        imagetalker.doStuff(card)
+        # print(card)
+        imagetalker.makeCard(card)
+
+    # print("END")
+        
 
 
 def testing():
@@ -43,7 +48,7 @@ if __name__ == "__main__":
     main()
 
 ### monster card format
-# name, attr, types(vector), lvl, atk/def(vector), effect
+# name, attr, types(vector), lvl, atk/def(vector), effect, ydkcode
 
 ### spell/trap card format
-# name, spell/trap, type, effect
+# name, spell/trap, type, effect, ydkcode
