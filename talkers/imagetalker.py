@@ -1,25 +1,106 @@
 #####################################################################
 ### This file should maybe probably handle all of the image editing
 #####################################################################
-from PIL import Image #This is used to open images
-from PIL import ImageDraw # this is used to draw to images
+from PIL import Image, ImageDraw, ImageFont
 
 
 
 
-def doStuff(card):
-    # name = ""
-    if card[1] == "Spell" or card[1] == "Trap":
-        # name = card[0]
-        print("spell/trap")
-    else:
-        print("monster cardo")
+
+def makeMonster(card):
+    name = card[0]
+    attr = card[1]
+    types = card[2] # vector
+    lvl = card[3]
+    stats = card[4] # vector
+    eff = card[5]
+    code = card[6]
     
-    # print(name)
+    print(f"Working on {name}!")
+
+    template = Image.open("template/template.png")
+    brush = ImageDraw.Draw(template)
+    
+    drawAttribute(attr, brush)
+    drawName(name, brush)
+    drawLevel()
+
+    template.show()
+
+def drawLevel():
+    ### opening and resizeing star image
+    star = Image.open("template/black-star-icon.png")
+    star = star.resize((50,50), Image.Resampling.LANCZOS)
+    
+    ### starts at x 724
+    
+    
+
+    
+
+def drawName(name, brush):
+    left, top = 49, 52
+    right, bottom = 762, 128
+    box_width = right - left
+    box_height = bottom - top
+
+    # Start trying from a big font size and go down if needed
+    max_font_size = 100
+    min_font_size = 5
+    best_font = None
+
+    # Load a font (change path if needed)
+    font_path = "arial.ttf"  # Or any .ttf you have
+
+    for size in range(max_font_size, min_font_size - 1, -1):
+        font = ImageFont.truetype(font_path, size)
+        bbox = brush.textbbox((0, 0), name, font=font)
+        text_w = bbox[2] - bbox[0]
+        text_h = bbox[3] - bbox[1]
+
+        if text_w <= box_width and text_h <= box_height:
+            best_font = font
+            break
+
+    # If no font fits, fall back to smallest
+    if best_font is None:
+        best_font = ImageFont.truetype(font_path, min_font_size)
+
+    # Get size of final text
+    bbox = brush.textbbox((0, 0), name, font=best_font)
+    text_w = bbox[2] - bbox[0]
+    text_h = bbox[3] - bbox[1]
+
+    # Center the text in the box
+    text_x = left + (box_width - text_w) // 2
+    text_y = top + (box_height - text_h) // 2
+
+    # Draw the text
+    brush.text((text_x, text_y + 20), name, font=best_font, fill="black")
+
+def drawAttribute(attr, brush): ### this should also work with spell/trap
+    # Load a bigger font (adjust the path if needed)
+    font = ImageFont.truetype("arial.ttf", 32)  # Use larger size
+    # center
+    att_x, att_y = 717, 50
+    # Get text bounding box
+    bbox = brush.textbbox((0, 0), attr, font=font)
+    txt_w = bbox[2] - bbox[0]
+    txt_h = bbox[3] - bbox[1]
+    # Calculate top-left to center it
+    text_x = att_x - txt_w // 2
+    text_y = att_y - txt_h // 2
+    # Draw the text
+    brush.text((text_x, text_y), attr, font=font, fill="black")
+
+def makeCard(card):
+    if len(card) == 7:
+        makeMonster(card)
+    # else:
+    #     print(f"This a {card[1]} card!")
 
 
-
-
+##### Below this is only used to make the temp card #######################
 
 def main():
     print("Inside imagetalker, running test")
