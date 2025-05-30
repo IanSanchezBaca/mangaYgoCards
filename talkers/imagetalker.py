@@ -2,6 +2,7 @@
 ### This file should maybe probably handle all of the image editing
 #####################################################################
 from PIL import Image, ImageDraw, ImageFont
+import textwrap
 
 ### loading this in early i uess
 star = Image.open("template/black-star-icon.png")
@@ -17,9 +18,10 @@ def makeMonster(card):
     lvl = int(card[3])
     stats = card[4] # vector
     eff = card[5]
-    code = card[6]
+    code = card[6] 
     
     print(f"Working on {name}!")
+
 
     template = Image.open("template/template.png")
     brush = ImageDraw.Draw(template)
@@ -27,21 +29,76 @@ def makeMonster(card):
     drawAttribute(attr, brush)
     drawName(name, brush)
     drawLevel(template, lvl)
+    drawType(types, brush)
+    drawEffect(eff, brush)
 
     template.show()
 
+def drawEffect(eff, brush):
+    # Box coordinates
+    top_left = (60, 880)
+    bottom_right = (750, 1070)
+    box_width = bottom_right[0] - top_left[0]
+    box_height = bottom_right[1] - top_left[1]
+
+    
+    
+    # Load font
+    font_path = "arial.ttf"  # Update if needed
+    max_font_size = 60
+    min_font_size = 10
+
+    # Try decreasing font sizes until text fits
+    for font_size in range(max_font_size, min_font_size - 1, -1):
+        font = ImageFont.truetype(font_path, font_size)
+
+        # Estimate characters that can fit in one line
+        avg_char_width = font.getlength("A")
+        max_chars_per_line = max(1, box_width // avg_char_width)
+
+        wrapped_lines = textwrap.wrap(eff, width=int(max_chars_per_line), break_long_words=True)
+
+        line_height = font.getbbox("A")[3] - font.getbbox("A")[1]
+        total_text_height = line_height * len(wrapped_lines)
+
+        if total_text_height <= box_height:
+            break  # Found a size that fits
+
+    # Draw text centered in the box
+    y = top_left[1] + (box_height - total_text_height) // 2
+    for line in wrapped_lines:
+        x = top_left[0]  # left align text
+        brush.text((x, y), line, font=font, fill="black")
+        y += line_height
+
+
+
+def drawType(types, brush):
+    typ = "[{}]".format(" / ".join(types))
+
+    # Load a bigger font (adjust the path if needed)
+    font = ImageFont.truetype("arial.ttf", 25)  # Use larger size
+
+    # Get text bounding box
+    # bbox = brush.textbbox((0, 0), typ, font=font)
+    # txt_w = bbox[2] - bbox[0]
+    # txt_h = bbox[3] - bbox[1]
+
+    # tl_x = 85
+    tl_x = 60
+    tl_y = 850
+
+    # Draw the text
+    brush.text((tl_x, tl_y), typ, font=font, fill="black")
+
 def drawLevel(template, lvl):
-    starx = 674
-    stary = 150
-
-    for i in range(lvl):
-        blud = 55 * i
-        template.paste(star, (starx - blud, stary), mask=star)
-
-    
-    
-
-    
+    ### will make this work with spell and trap cards as well
+    if isinstance(lvl, int):
+        starx = 674
+        stary = 150
+        for i in range(lvl):
+            blud = 55 * i
+            template.paste(star, (starx - blud, stary), mask=star)
 
 def drawName(name, brush):
     left, top = 49, 52
