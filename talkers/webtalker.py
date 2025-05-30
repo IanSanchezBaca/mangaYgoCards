@@ -23,7 +23,7 @@ def searchCard(name: str):
     except req.exceptions.RequestException as e:
         print(f"Error fetching page: {e}")
         print("If this is an AltArt it wont work")
-        return
+        return None
 
     s = soup(res.text, 'html.parser')
     tags = s.find_all(attrs={"title": True})
@@ -58,10 +58,14 @@ def searchCard(name: str):
         print(f"could not find index for {name}, maybe doesnt exist.")
         exit(-1)
 
-    card.append(name) ### this should be the ydk code
+    if card:
+        card.append(name) ### this should be the ydk code
     # print(card)
 
-    return card ### comment this back in
+    if card:
+        return card ### comment this back in
+    else:
+        return None
 
 def monsterCardo(titles):
     monster = []
