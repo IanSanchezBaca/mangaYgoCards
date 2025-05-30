@@ -8,7 +8,12 @@ import textwrap
 star = Image.open("template/black-star-icon.png")
 star = star.resize((50,50), Image.Resampling.LANCZOS)
 
-path = "D:/Users/iansa/Documents/ProjectIgnis/pics"
+path = ""
+
+def changePath(p):
+    global path 
+    # path = p ### this is the correct code
+    path = "D:/Users/iansa/Documents/ProjectIgnis/pics"
 
 def cropImage(card, template):
     # print(f"going into {path}")
@@ -24,8 +29,6 @@ def cropImage(card, template):
     template.paste(sticker, (95, 215))
 
     template.show()
-
-
 
 def makeMagic(card):
     name = card[0]
