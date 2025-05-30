@@ -19,7 +19,7 @@ def main():
     # ydkdeck = filetalker.openFile("template/altart.ydk")
 
     deck = testing()
-    
+    imagetalker.changePath("bogus")
     # deck = []
     # for card in ydkdeck:
     #     deck.append(webtalker.searchCard(card))
