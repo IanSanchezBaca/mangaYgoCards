@@ -41,7 +41,11 @@ def drawEffect(eff, brush):
     box_width = bottom_right[0] - top_left[0]
     box_height = bottom_right[1] - top_left[1]
 
-    
+    top_padding = 20
+    bottom_padding = 20
+    usable_box_height = box_height - top_padding - bottom_padding
+    start_y = top_left[1] + top_padding
+
     
     # Load font
     font_path = "arial.ttf"  # Update if needed
@@ -61,16 +65,24 @@ def drawEffect(eff, brush):
         line_height = font.getbbox("A")[3] - font.getbbox("A")[1]
         total_text_height = line_height * len(wrapped_lines)
 
-        if total_text_height <= box_height:
-            break  # Found a size that fits
+        if total_text_height <= usable_box_height:
+            break
+
+        # if total_text_height <= box_height:
+            # break  # Found a size that fits
 
     # Draw text centered in the box
-    y = top_left[1] + (box_height - total_text_height) // 2
+    # y = top_left[1] + (box_height - total_text_height) // 2
+    # for line in wrapped_lines:
+    #     x = top_left[0]  # left align text
+    #     brush.text((x, y), line, font=font, fill="black")
+    #     y += line_height
+
+    y = start_y
     for line in wrapped_lines:
-        x = top_left[0]  # left align text
+        x = top_left[0]
         brush.text((x, y), line, font=font, fill="black")
         y += line_height
-
 
 
 def drawType(types, brush):
