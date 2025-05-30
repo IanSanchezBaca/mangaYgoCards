@@ -42,7 +42,6 @@ def testing():
                 cards.append(card)
 
     return cards
-    
 
 if __name__ == "__main__":
     main()
