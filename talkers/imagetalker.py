@@ -18,7 +18,7 @@ def makeMonster(card):
     lvl = int(card[3])
     stats = card[4] # vector
     eff = card[5]
-    code = card[6] 
+    # code = card[6] 
     
     print(f"Working on {name}!")
 
@@ -69,7 +69,7 @@ def drawEffect(eff, brush):
             break
 
         # if total_text_height <= box_height:
-            # break  # Found a size that fits
+        #     break  # Found a size that fits
 
     # Draw text centered in the box
     # y = top_left[1] + (box_height - total_text_height) // 2
@@ -78,11 +78,12 @@ def drawEffect(eff, brush):
     #     brush.text((x, y), line, font=font, fill="black")
     #     y += line_height
 
-    y = start_y
+    y = start_y - 20
+    line_spacing = 5
     for line in wrapped_lines:
-        x = top_left[0]
+        x = top_left[0] + 100
         brush.text((x, y), line, font=font, fill="black")
-        y += line_height
+        y += line_height + line_spacing
 
 
 def drawType(types, brush):
