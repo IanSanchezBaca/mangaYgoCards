@@ -14,9 +14,16 @@ def openFile(filename):
 
     for line in file:
         card = line.strip()
-        if card[0].isdigit():
-            if not card in deck:
-                deck.append(card)
+        if card and card[0].isdigit():
+            found = False
+            for entry in deck:
+                if entry[0] == card:
+                    entry[1] += 1
+                    found = True
+                    break
+            if not found:
+                deck.append([card, 1])
+    
 
     return deck
 
