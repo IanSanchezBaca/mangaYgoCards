@@ -30,7 +30,7 @@ def cropImage(card, template):
 
         # template.show()
     
-    output = "output/" + card[len(card)-1] + ".png"
+    output = "output/" + card[len(card)-1] + ".jpg"
     template.save(output)
 
 def makeMagic(card):
