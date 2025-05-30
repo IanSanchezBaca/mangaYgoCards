@@ -12,23 +12,26 @@ path = ""
 
 def changePath(p):
     global path 
-    # path = p ### this is the correct code
+    # path = p ### comment this back in after tou finish
     path = "D:/Users/iansa/Documents/ProjectIgnis/pics"
 
 def cropImage(card, template):
     # print(f"going into {path}")
-    cardImage = path + "/" + card[len(card) - 1] + ".jpg"
-    # print(cardImage)
-    sticker = Image.open(cardImage)
+    if path:
+        cardImage = path + "/" + card[len(card) - 1] + ".jpg"
+        sticker = Image.open(cardImage)
     
-    # Coordinates: (left, top, right, bottom)
-    crop_box = (96, 216, 717, 835)
-    sticker = sticker.crop(crop_box)
+        # Coordinates: (left, top, right, bottom)
+        crop_box = (96, 216, 717, 835)
+        sticker = sticker.crop(crop_box)
 
-    # Paste the cropped image onto the destination image at (0, 0)
-    template.paste(sticker, (95, 215))
+        # Paste the cropped image onto the destination image at (0, 0)
+        template.paste(sticker, (95, 215))
 
-    template.show()
+        # template.show()
+    
+    output = "output/" + card[len(card)-1] + ".png"
+    template.save(output)
 
 def makeMagic(card):
     name = card[0]
@@ -250,7 +253,7 @@ def main():
 
     mage.putpixel((50,50), (255,0,0))
 
-    mage.show()
+    # mage.show()
 
     mage.save("tempimg.png", "PNG")
 
