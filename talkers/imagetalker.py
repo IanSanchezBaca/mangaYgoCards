@@ -3,6 +3,9 @@
 #####################################################################
 from PIL import Image, ImageDraw, ImageFont
 
+### loading this in early i uess
+star = Image.open("template/black-star-icon.png")
+star = star.resize((50,50), Image.Resampling.LANCZOS)
 
 
 
@@ -11,7 +14,7 @@ def makeMonster(card):
     name = card[0]
     attr = card[1]
     types = card[2] # vector
-    lvl = card[3]
+    lvl = int(card[3])
     stats = card[4] # vector
     eff = card[5]
     code = card[6]
@@ -23,16 +26,18 @@ def makeMonster(card):
     
     drawAttribute(attr, brush)
     drawName(name, brush)
-    drawLevel()
+    drawLevel(template, lvl)
 
     template.show()
 
-def drawLevel():
-    ### opening and resizeing star image
-    star = Image.open("template/black-star-icon.png")
-    star = star.resize((50,50), Image.Resampling.LANCZOS)
-    
-    ### starts at x 724
+def drawLevel(template, lvl):
+    starx = 674
+    stary = 150
+
+    for i in range(lvl):
+        blud = 55 * i
+        template.paste(star, (starx - blud, stary), mask=star)
+
     
     
 
