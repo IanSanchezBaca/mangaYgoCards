@@ -8,8 +8,44 @@ import textwrap
 star = Image.open("template/black-star-icon.png")
 star = star.resize((50,50), Image.Resampling.LANCZOS)
 
+path = "D:/Users/iansa/Documents/ProjectIgnis/pics"
+
+def cropImage(card, template):
+    # print(f"going into {path}")
+    cardImage = path + "/" + card[len(card) - 1] + ".jpg"
+    # print(cardImage)
+    sticker = Image.open(cardImage)
+    
+    # Coordinates: (left, top, right, bottom)
+    crop_box = (96, 216, 717, 835)
+    sticker = sticker.crop(crop_box)
+
+    # Paste the cropped image onto the destination image at (0, 0)
+    template.paste(sticker, (95, 215))
+
+    template.show()
 
 
+
+def makeMagic(card):
+    name = card[0]
+    magicType = card[1]
+    type = card[2]
+    eff = card[3]
+    # code = card[4]
+
+    print(f"Working on {name}!")
+
+    template = Image.open("template/template.png")
+    brush = ImageDraw.Draw(template)
+
+    drawAttribute(magicType, brush)
+    drawName(name, brush)
+    drawLevel(brush, type)
+    drawEffect(eff, brush)
+    cropImage(card, template)
+
+    # template.show()
 
 def makeMonster(card):
     name = card[0]
@@ -22,7 +58,6 @@ def makeMonster(card):
     
     print(f"Working on {name}!")
 
-
     template = Image.open("template/template.png")
     brush = ImageDraw.Draw(template)
     
@@ -31,8 +66,28 @@ def makeMonster(card):
     drawLevel(template, lvl)
     drawType(types, brush)
     drawEffect(eff, brush)
+    drawStats(stats, brush)
+    cropImage(card, template)
 
-    template.show()
+    # template.show()
+    # template.save(f"{name}.png")
+
+def drawStats(stats, brush):
+    blood = f"ATK {stats[0]}     DEF {stats[1]}"
+    # Load a bigger font (adjust the path if needed)
+    font = ImageFont.truetype("arial.ttf", 32)  # Use larger size
+    # center
+    att_x, att_y = 406, 1120
+    # Get text bounding box
+    bbox = brush.textbbox((0, 0), blood, font=font)
+    txt_w = bbox[2] - bbox[0]
+    txt_h = bbox[3] - bbox[1]
+    # Calculate top-left to center it
+    text_x = att_x - txt_w // 2
+    text_y = att_y - txt_h // 2
+    # Draw the text
+    
+    brush.text((text_x, text_y), blood, font=font, fill="black")
 
 def drawEffect(eff, brush):
     # Box coordinates
@@ -85,7 +140,6 @@ def drawEffect(eff, brush):
         brush.text((x, y), line, font=font, fill="black")
         y += line_height + line_spacing
 
-
 def drawType(types, brush):
     typ = "[{}]".format(" / ".join(types))
 
@@ -105,13 +159,17 @@ def drawType(types, brush):
     brush.text((tl_x, tl_y), typ, font=font, fill="black")
 
 def drawLevel(template, lvl):
+    starx = 674
+    stary = 150
     ### will make this work with spell and trap cards as well
     if isinstance(lvl, int):
-        starx = 674
-        stary = 150
         for i in range(lvl):
             blud = 55 * i
             template.paste(star, (starx - blud, stary), mask=star)
+    else:
+        font = ImageFont.truetype("arial.ttf", 32)  # Use larger size
+        lvl = "(" + lvl + ")"
+        template.text((starx - 400, stary + 10), lvl, font=font, fill="black")
 
 def drawName(name, brush):
     left, top = 49, 52
@@ -171,8 +229,8 @@ def drawAttribute(attr, brush): ### this should also work with spell/trap
 def makeCard(card):
     if len(card) == 7:
         makeMonster(card)
-    # else:
-    #     print(f"This a {card[1]} card!")
+    else:
+        makeMagic(card)
 
 
 ##### Below this is only used to make the temp card #######################
