@@ -49,7 +49,7 @@ def makeMagic(card):
     drawAttribute(magicType, brush)
     drawName(name, brush)
     drawLevel(brush, type)
-    drawEffect(eff, brush)
+    drawEffect(eff, brush, 1)
     cropImage(card, template)
 
     # template.show()
@@ -102,23 +102,34 @@ def drawStats(stats, brush):
     
     brush.text((text_x, text_y), blood, font=font, fill="black")
 
-def drawEffect(eff, brush):
+def drawEffect(eff, brush, magic=None):
     # Box coordinates
-    top_left = (60, 880)
-    bottom_right = (750, 1070)
+    # top_left = (60, 880)
+    # bottom_right = (750, 1070)
+    top_left = (25, 880)
+    bottom_right = (787, 1070)
+
     box_width = bottom_right[0] - top_left[0]
     box_height = bottom_right[1] - top_left[1]
 
-    top_padding = 20
-    bottom_padding = 20
+    if not magic:
+        top_padding = 20
+        bottom_padding = 0
+    else:
+        top_padding = 0
+        bottom_padding = 0
+    
+    
     usable_box_height = box_height - top_padding - bottom_padding
     start_y = top_left[1] + top_padding
 
     
     # Load font
     font_path = "arial.ttf"  # Update if needed
-    max_font_size = 60
-    min_font_size = 10
+    # max_font_size = 60
+    # min_font_size = 10
+    max_font_size = 70
+    min_font_size = 20
 
     # Try decreasing font sizes until text fits
     for font_size in range(max_font_size, min_font_size - 1, -1):
@@ -150,6 +161,7 @@ def drawEffect(eff, brush):
     line_spacing = 5
     for line in wrapped_lines:
         x = top_left[0] + 100
+        # x = top_left[0] 
         brush.text((x, y), line, font=font, fill="black")
         y += line_height + line_spacing
 
