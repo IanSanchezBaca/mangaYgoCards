@@ -3,6 +3,7 @@
 #####################################################################
 from PIL import Image, ImageDraw, ImageFont
 import textwrap
+import os
 
 ### loading this in early i uess
 star = Image.open("template/black-star-icon.png")
@@ -17,7 +18,7 @@ def changePath(p):
 
 def cropImage(card, template):
     # print(f"going into {path}")
-    if path:
+    if os.path.isfile(path):
         cardImage = path + "/" + card[len(card) - 1] + ".jpg"
         sticker = Image.open(cardImage)
     
@@ -31,9 +32,6 @@ def cropImage(card, template):
 
         # template.show()
     
-    output = "output/" + card[len(card)-1] + ".jpg"
-    template.save(output)
-
 def makeMagic(card):
     name = card[0]
     magicType = card[1]
@@ -61,7 +59,6 @@ def makeMonster(card):
     lvl = int(card[3])
     stats = card[4] # vector
     eff = card[5]
-    # code = card[6] 
     Xyz = None
 
     if len(types) >= 2 and types[1] == "Xyz":
@@ -84,6 +81,9 @@ def makeMonster(card):
 
     # template.show()
     # template.save(f"{name}.png")
+
+    output = "output/" + card[len(card)-1] + ".jpg"
+    template.save(output)
 
 def drawStats(stats, brush):
     blood = f"ATK {stats[0]}     DEF {stats[1]}"
