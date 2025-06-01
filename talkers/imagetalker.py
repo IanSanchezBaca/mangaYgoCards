@@ -24,6 +24,7 @@ def cropImage(card, template):
         # Coordinates: (left, top, right, bottom)
         crop_box = (96, 216, 717, 835)
         sticker = sticker.crop(crop_box)
+        sticker = sticker.resize((620,620))
 
         # Paste the cropped image onto the destination image at (0, 0)
         template.paste(sticker, (95, 215))
@@ -231,8 +232,8 @@ def drawName(name, brush):
     # Draw the text
     brush.text((text_x, text_y + 20), name, font=best_font, fill="black")
 
-def drawAttribute(attr, brush): ### this should also work with spell/trap
-    # Load a bigger font (adjust the path if needed)
+def drawAttribute(attr, brush):
+    # Load a bigger font
     font = ImageFont.truetype("arial.ttf", 32)  # Use larger size
     # center
     att_x, att_y = 717, 50
