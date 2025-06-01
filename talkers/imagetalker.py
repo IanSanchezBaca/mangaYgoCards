@@ -40,7 +40,7 @@ def makeMagic(card):
     eff = card[3]
     # code = card[4]
 
-    print(f"Working on {name}!")
+    # print(f"Working on {name}!")
 
     template = Image.open("template/template.png")
     brush = ImageDraw.Draw(template)
@@ -61,15 +61,21 @@ def makeMonster(card):
     stats = card[4] # vector
     eff = card[5]
     # code = card[6] 
+    Xyz = None
+
+    if len(types) >= 2 and types[1] == "Xyz":
+        Xyz = 1
+        
+
     
-    print(f"Working on {name}!")
+    # print(f"Working on {name}!")
 
     template = Image.open("template/template.png")
     brush = ImageDraw.Draw(template)
     
     drawAttribute(attr, brush)
     drawName(name, brush)
-    drawLevel(template, lvl)
+    drawLevel(template, lvl, Xyz)
     drawType(types, brush)
     drawEffect(eff, brush)
     drawStats(stats, brush)
@@ -164,14 +170,22 @@ def drawType(types, brush):
     # Draw the text
     brush.text((tl_x, tl_y), typ, font=font, fill="black")
 
-def drawLevel(template, lvl):
+def drawLevel(template, lvl, rank=None):
     starx = 674
     stary = 150
     ### will make this work with spell and trap cards as well
     if isinstance(lvl, int):
-        for i in range(lvl):
-            blud = 55 * i
-            template.paste(star, (starx - blud, stary), mask=star)
+        if not rank:
+            for i in range(lvl):
+                blud = 55 * i
+                template.paste(star, (starx - blud, stary), mask=star)
+        else:
+            starx = 85
+            for i in range(lvl):
+                blud = 55 * i
+                template.paste(star, (starx + blud, stary), mask=star)
+
+
     else:
         font = ImageFont.truetype("arial.ttf", 32)  # Use larger size
         lvl = "(" + lvl + ")"
