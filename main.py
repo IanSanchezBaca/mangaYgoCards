@@ -13,7 +13,8 @@ def main():
     ### loads the database
     database = databasetalker.loadDataBase()
     
-    ### grabs the ydk path and makes a deck of the codes
+    ### grabs the ydk path and makes a list of the codes
+    ### The list is a 2d vector with each vector with the first element being the code and the second element being how many times it comes up
     ydk = sys.argv[1] ### grab the ydk file path
     ydkdeck = filetalker.openFile(ydk)
 
@@ -22,12 +23,7 @@ def main():
     if len(sys.argv) >= 3:
         imagetalker.changePath(sys.argv[2])
 
-    # ydkdeck = filetalker.openFile("template/3cards.ydk")
-    # ydkdeck = filetalker.openFile("template/Goblins.ydk")
-    # ydkdeck = filetalker.openFile("template/link.ydk")
-    # ydkdeck = filetalker.openFile("template/altart.ydk")
-    # deck = testing()
-    
+    ### grabs cards from either the "database" or from the website
     new = []
     deck = []
     for card in ydkdeck:
@@ -36,18 +32,22 @@ def main():
         if check:
             # print(check)
             deck.append(check)
-        else:
-            temp = webtalker.searchCard(card[0])
-            if temp:
-                deck.append(temp)
-                new.append(temp)
+        # else: ### comment this back in
+        #     temp = webtalker.searchCard(card[0])
+        #     if temp:
+        #         deck.append(temp)
+        #         new.append(temp)
 
-
+    ### finally creates the image
     for card in deck:
         imagetalker.makeCard(card)
         # print(card)
-        
-    
+
+
+    ### will make pdf file here
+
+
+    ### saves new cards not already in the database
     if len(new):
         print("saving new cards!")
         databasetalker.saveDataBase(new)
