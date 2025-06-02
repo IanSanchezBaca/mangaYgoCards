@@ -1,5 +1,5 @@
 talkers/output.txt
 __pycache__
 output/*.jpg
-*.pdf
+./*.pdf
 *.ydk
