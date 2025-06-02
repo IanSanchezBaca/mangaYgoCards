@@ -3,11 +3,11 @@
 ##################################################
 import sys ### using this for argv
 import ast
-from talkers import filetalker, webtalker, imagetalker, databasetalker
+from talkers import filetalker, webtalker, imagetalker, databasetalker, pdfTalker
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: ./main.py <path to ydk file> <path to folder of images>")
+        print("Usage:\n ./main.py <path to ydk file> optional:<path to folder of images> ")
         exit(-1)
     
     ### loads the database
@@ -18,7 +18,6 @@ def main():
     ydk = sys.argv[1] ### grab the ydk file path
     ydkdeck = filetalker.openFile(ydk)
 
-
     ### this checks if they added the path to the images
     if len(sys.argv) >= 3:
         imagetalker.changePath(sys.argv[2])
@@ -26,33 +25,35 @@ def main():
     ### grabs cards from either the "database" or from the website
     new = []
     deck = []
-    for card in ydkdeck:
+    for card in ydkdeck[:]:
         check = databasetalker.check(database, card[0])
-        # databasetalker.check(database, card[0])
         if check:
-            # print(check)
             deck.append(check)
-        # else: ### comment this back in
-        #     temp = webtalker.searchCard(card[0])
-        #     if temp:
-        #         deck.append(temp)
-        #         new.append(temp)
+        else:
+            temp = webtalker.searchCard(card[0])
+            if temp:
+                deck.append(temp)
+                new.append(temp)
+            else:
+                ydkdeck.remove(card)
 
-    ### finally creates the image
+
+    ### creates the image
     for card in deck:
         imagetalker.makeCard(card)
         # print(card)
 
 
     ### will make pdf file here
+    pdfTalker.importCards(ydkdeck)
+    pdfTalker.makeCards()
+
 
 
     ### saves new cards not already in the database
     if len(new):
         print("saving new cards!")
         databasetalker.saveDataBase(new)
-    # else:
-    #     print("no new cards")
         
 
 
