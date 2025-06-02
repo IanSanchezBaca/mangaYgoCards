@@ -18,8 +18,10 @@ def changePath(p):
 
 def cropImage(card, template):
     # print(f"going into {path}")
-    if os.path.isfile(path):
-        cardImage = path + "/" + card[len(card) - 1] + ".jpg"
+    cardImage = path + "/" + card[len(card) - 1] + ".jpg"
+    if os.path.isfile(cardImage):
+        # if path:
+        # cardImage = path + "/" + card[len(card) - 1] + ".jpg"
         sticker = Image.open(cardImage)
     
         # Coordinates: (left, top, right, bottom)
@@ -265,9 +267,7 @@ def makeCard(card):
     else:
         makeMagic(card)
 
-
 ##### Below this is only used to make the temp card #######################
-
 def main():
     print("Inside imagetalker, running test")
 
