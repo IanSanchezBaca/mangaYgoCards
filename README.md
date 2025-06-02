@@ -1,2 +1,5 @@
 # mangaYgoCards
-a "program" that takes in ydk files and uses edopro cards to create manga style cards
+This program takes in ydk files and makes a pdf of proxies in the style of the ygo manga
+
+* Links don't work
+* altart cards don't work
