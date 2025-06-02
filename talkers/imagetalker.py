@@ -47,6 +47,8 @@ def makeMagic(card):
     drawLevel(brush, type)
     drawEffect(eff, brush, 1)
     cropImage(card, template)
+    output = "output/" + card[len(card)-1] + ".jpg"
+    template.save(output)
 
 
 def makeMonster(card):
