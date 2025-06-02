@@ -13,8 +13,7 @@ path = ""
 
 def changePath(p):
     global path 
-    # path = p ### comment this back in after tou finish
-    path = "D:/Users/iansa/Documents/ProjectIgnis/pics"
+    path = p ### comment this back in after tou finish
 
 def cropImage(card, template):
     # print(f"going into {path}")
@@ -32,7 +31,6 @@ def cropImage(card, template):
         # Paste the cropped image onto the destination image at (0, 0)
         template.paste(sticker, (95, 215))
 
-        # template.show()
     
 def makeMagic(card):
     name = card[0]
@@ -40,8 +38,6 @@ def makeMagic(card):
     type = card[2]
     eff = card[3]
     # code = card[4]
-
-    # print(f"Working on {name}!")
 
     template = Image.open("template/template.png")
     brush = ImageDraw.Draw(template)
@@ -52,7 +48,6 @@ def makeMagic(card):
     drawEffect(eff, brush, 1)
     cropImage(card, template)
 
-    # template.show()
 
 def makeMonster(card):
     name = card[0]
@@ -65,10 +60,6 @@ def makeMonster(card):
 
     if len(types) >= 2 and types[1] == "Xyz":
         Xyz = 1
-        
-
-    
-    # print(f"Working on {name}!")
 
     template = Image.open("template/template.png")
     brush = ImageDraw.Draw(template)
@@ -81,36 +72,34 @@ def makeMonster(card):
     drawStats(stats, brush)
     cropImage(card, template)
 
-    # template.show()
-    # template.save(f"{name}.png")
-
     output = "output/" + card[len(card)-1] + ".jpg"
     template.save(output)
 
 def drawStats(stats, brush):
     blood = f"ATK {stats[0]}     DEF {stats[1]}"
-    # Load a bigger font (adjust the path if needed)
+    
+    ### Load a bigger font (adjust the path if needed)
     font = ImageFont.truetype("arial.ttf", 32)  # Use larger size
-    # center
+    
+    ### center
     att_x, att_y = 406, 1120
-    # Get text bounding box
+    
+    ### Get text bounding box
     bbox = brush.textbbox((0, 0), blood, font=font)
     txt_w = bbox[2] - bbox[0]
     txt_h = bbox[3] - bbox[1]
-    # Calculate top-left to center it
+    
+    ### Calculate top-left to center it
     text_x = att_x - txt_w // 2
     text_y = att_y - txt_h // 2
-    # Draw the text
     
+    ### Draw the text
     brush.text((text_x, text_y), blood, font=font, fill="black")
 
 def drawEffect(eff, brush, magic=None):
-    # Box coordinates
-    # top_left = (60, 880)
-    # bottom_right = (750, 1070)
+    ### Box coordinates
     top_left = (25, 880)
     bottom_right = (787, 1070)
-
     box_width = bottom_right[0] - top_left[0]
     box_height = bottom_right[1] - top_left[1]
 
@@ -126,18 +115,16 @@ def drawEffect(eff, brush, magic=None):
     start_y = top_left[1] + top_padding
 
     
-    # Load font
+    ### Load font
     font_path = "arial.ttf"  # Update if needed
-    # max_font_size = 60
-    # min_font_size = 10
     max_font_size = 70
     min_font_size = 20
 
-    # Try decreasing font sizes until text fits
+    ### Try decreasing font sizes until text fits
     for font_size in range(max_font_size, min_font_size - 1, -1):
         font = ImageFont.truetype(font_path, font_size)
 
-        # Estimate characters that can fit in one line
+        ### Estimate characters that can fit in one line
         avg_char_width = font.getlength("A")
         max_chars_per_line = max(1, box_width // avg_char_width)
 
@@ -148,16 +135,6 @@ def drawEffect(eff, brush, magic=None):
 
         if total_text_height <= usable_box_height:
             break
-
-        # if total_text_height <= box_height:
-        #     break  # Found a size that fits
-
-    # Draw text centered in the box
-    # y = top_left[1] + (box_height - total_text_height) // 2
-    # for line in wrapped_lines:
-    #     x = top_left[0]  # left align text
-    #     brush.text((x, y), line, font=font, fill="black")
-    #     y += line_height
 
     y = start_y - 20
     line_spacing = 5
@@ -170,24 +147,19 @@ def drawEffect(eff, brush, magic=None):
 def drawType(types, brush):
     typ = "[{}]".format(" / ".join(types))
 
-    # Load a bigger font (adjust the path if needed)
+    ### Load a bigger font (adjust the path if needed)
     font = ImageFont.truetype("arial.ttf", 25)  # Use larger size
 
-    # Get text bounding box
-    # bbox = brush.textbbox((0, 0), typ, font=font)
-    # txt_w = bbox[2] - bbox[0]
-    # txt_h = bbox[3] - bbox[1]
-
-    # tl_x = 85
     tl_x = 60
     tl_y = 850
 
-    # Draw the text
+    ### Draw the text
     brush.text((tl_x, tl_y), typ, font=font, fill="black")
 
 def drawLevel(template, lvl, rank=None):
     starx = 674
     stary = 150
+    
     ### will make this work with spell and trap cards as well
     if isinstance(lvl, int):
         if not rank:
@@ -199,8 +171,6 @@ def drawLevel(template, lvl, rank=None):
             for i in range(lvl):
                 blud = 55 * i
                 template.paste(star, (starx + blud, stary), mask=star)
-
-
     else:
         font = ImageFont.truetype("arial.ttf", 32)  # Use larger size
         lvl = "(" + lvl + ")"
@@ -212,12 +182,12 @@ def drawName(name, brush):
     box_width = right - left
     box_height = bottom - top
 
-    # Start trying from a big font size and go down if needed
+    ### Start trying from a big font size and go down if needed
     max_font_size = 100
     min_font_size = 5
     best_font = None
 
-    # Load a font (change path if needed)
+    ### Load a font (change path if needed)
     font_path = "arial.ttf"  # Or any .ttf you have
 
     for size in range(max_font_size, min_font_size - 1, -1):
@@ -230,35 +200,39 @@ def drawName(name, brush):
             best_font = font
             break
 
-    # If no font fits, fall back to smallest
+    ### If no font fits, fall back to smallest
     if best_font is None:
         best_font = ImageFont.truetype(font_path, min_font_size)
 
-    # Get size of final text
+    ### Get size of final text
     bbox = brush.textbbox((0, 0), name, font=best_font)
     text_w = bbox[2] - bbox[0]
     text_h = bbox[3] - bbox[1]
 
-    # Center the text in the box
+    ### Center the text in the box
     text_x = left + (box_width - text_w) // 2
     text_y = top + (box_height - text_h) // 2
 
-    # Draw the text
+    ### Draw the text
     brush.text((text_x, text_y + 20), name, font=best_font, fill="black")
 
 def drawAttribute(attr, brush):
-    # Load a bigger font
+    ### Load a bigger font
     font = ImageFont.truetype("arial.ttf", 32)  # Use larger size
-    # center
+    
+    ### center
     att_x, att_y = 717, 50
-    # Get text bounding box
+    
+    ### Get text bounding box
     bbox = brush.textbbox((0, 0), attr, font=font)
     txt_w = bbox[2] - bbox[0]
     txt_h = bbox[3] - bbox[1]
-    # Calculate top-left to center it
+    
+    ### Calculate top-left to center it
     text_x = att_x - txt_w // 2
     text_y = att_y - txt_h // 2
-    # Draw the text
+    
+    ### Draw the text
     brush.text((text_x, text_y), attr, font=font, fill="black")
 
 def makeCard(card):
