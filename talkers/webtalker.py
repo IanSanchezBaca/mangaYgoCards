@@ -1,5 +1,6 @@
 #########################################################
 ### This searches the website for the stuff that I need
+### NOTE I might need to change the website and links
 #########################################################
 
 import requests as req

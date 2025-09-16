@@ -1,7 +1,7 @@
 # mangaYgoCards
 This program takes in ydk files and makes a pdf of proxies in the style of the ygo manga
 
-* Links don't work
+* Link monsters don't work
 * alt-art cards don't work
 
 <img src="writeup/8736823.jpg" alt="Alt Text" width="300" height="400">

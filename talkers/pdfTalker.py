@@ -4,6 +4,7 @@
 ### examples of other proxy makers
 ### https://dejauxvue.github.io/YGOProxyGenerator/html/index.html
 ### https://proxies.ygoresources.com
+
 import os
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas

@@ -1,3 +1,6 @@
+###############################################
+# If i rememebr correctly, this isnt really a db just a psuedo one
+###############################################
 import ast
 
 def loadDataBase():

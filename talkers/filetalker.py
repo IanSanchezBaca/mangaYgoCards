@@ -1,5 +1,6 @@
 ####################################
 ### This file handles the file stuff
+### i.e. opening and reading the ydk
 ####################################
 
 def openFile(filename):
