@@ -18,7 +18,7 @@ def openFile(filename):
         if card and card[0].isdigit():
             deck.append(card)
 
-    print(deck) 
+    # print(deck) 
 
     return deck
 
