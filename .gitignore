@@ -4,3 +4,6 @@ output/*.jpg
 ./*.pdf
 *.ydk
 VirtualWorld/
+virtualWorld/
+.venv/
+venv/
