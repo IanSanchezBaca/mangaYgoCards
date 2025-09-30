@@ -243,6 +243,11 @@ def makeCard(card):
     else:
         makeMagic(card)
 
+
+def newMain():
+    print("imagetalker")
+
+
 ##### Below this is only used to make the temp card #######################
 def main():
     print("Inside imagetalker, running test")
@@ -313,8 +318,8 @@ def createTemplate():
     card.save("template.png")
 
 if __name__ == "__main__":
-    # main()
-    createTemplate()
+    newMain()
+    # createTemplate()
 
 
 ### border is 25px

@@ -2,14 +2,10 @@
 ### The main page this will prob not handle much
 ##################################################
 import os, ast, argparse
-from talkers import filetalker, webtalker, imagetalker, databasetalker, pdfTalker
+from talkers import filetalker, webtalker, imagetalker, pdfTalker
 
 def main(ydkPath, imgFolder, saveImages):
-    ### loads the database
-    database = databasetalker.loadDataBase()
     
-    ### grabs the ydk path and makes a list of the codes
-    ### The list is a 2d vector with each vector with the first element being the code and the second element being how many times it comes up
     ydk = ydkPath
     ydkdeck = filetalker.openFile(ydk)
 
@@ -65,22 +61,31 @@ def testing():
 
     return cards
 
+
+def testMain():
+    print("testing")
+
 if __name__ == "__main__":
-    ### global variables for flags and stuff
-    parser = argparse.ArgumentParser(description="Manga Style YGO Proxie PDF Generator")
 
-    ### Required positional argument: path to YDK file
-    parser.add_argument('ydk_path', help='Path to .ydk deck file')
+    testMain()
 
-    ### Optional positional argument: image folder
-    parser.add_argument('image_folder', nargs='?', help='Folder containing card images')
+    
 
-    ### Optional flag: -s
-    parser.add_argument('-s', action='store_true', help='Save the jpg images created')
+    # ### global variables for flags and stuff
+    # parser = argparse.ArgumentParser(description="Manga Style YGO Proxie PDF Generator")
 
-    args = parser.parse_args()
+    # ### Required positional argument: path to YDK file
+    # parser.add_argument('ydk_path', help='Path to .ydk deck file')
 
-    main(args.ydk_path, args.image_folder, args.s)
+    # ### Optional positional argument: image folder
+    # parser.add_argument('image_folder', nargs='?', help='Folder containing card images')
+
+    # ### Optional flag: -s
+    # parser.add_argument('-s', action='store_true', help='Save the jpg images created')
+
+    # args = parser.parse_args()
+
+    # main(args.ydk_path, args.image_folder, args.s)
 
 ### monster card format
 # name, attr, types(vector), lvl, atk/def(vector), effect, ydkcode

@@ -9,7 +9,7 @@ import requests as req
 def saveImage(imgurl, cardname):
     # print(imgurl)
     file_name = str(cardname) + ".jpg"
-    saveDir = "../output/cropped_" + file_name
+    saveDir = "output/cropped_" + file_name
 
     # ### check if the file already exists
     # if os.path.exists(saveDir):
@@ -23,7 +23,7 @@ def saveImage(imgurl, cardname):
     
 def searchCard(name: str):
     cardName = str(name)
-    saveDir = "../output/cropped_" + cardName
+    saveDir = "/output/cropped_" + cardName
 
     ### check if the file already exists
     if not os.path.exists(saveDir):
