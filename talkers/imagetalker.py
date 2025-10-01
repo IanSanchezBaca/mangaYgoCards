@@ -5,9 +5,9 @@ from PIL import Image, ImageDraw, ImageFont
 import textwrap
 import os
 
-### loading this in early i uess
-star = Image.open("template/black-star-icon.png")
-star = star.resize((50,50), Image.Resampling.LANCZOS)
+### loading this in early i guess
+# star = Image.open("template/black-star-icon.png")
+# star = star.resize((50,50), Image.Resampling.LANCZOS)
 
 path = ""
 
@@ -15,21 +15,21 @@ def changePath(p):
     global path 
     path = p ### comment this back in after tou finish
 
-def cropImage(card, template):
-    # print(f"going into {path}")
-    cardImage = path + "/" + card[len(card) - 1] + ".jpg"
-    if os.path.isfile(cardImage):
-        # if path:
-        # cardImage = path + "/" + card[len(card) - 1] + ".jpg"
-        sticker = Image.open(cardImage)
+# def cropImage(card, template):
+#     # print(f"going into {path}")
+#     cardImage = path + "/" + card[len(card) - 1] + ".jpg"
+#     if os.path.isfile(cardImage):
+#         # if path:
+#         # cardImage = path + "/" + card[len(card) - 1] + ".jpg"
+#         sticker = Image.open(cardImage)
     
-        # Coordinates: (left, top, right, bottom)
-        crop_box = (96, 216, 717, 835)
-        sticker = sticker.crop(crop_box)
-        sticker = sticker.resize((620,620))
+#         # Coordinates: (left, top, right, bottom)
+#         crop_box = (96, 216, 717, 835)
+#         sticker = sticker.crop(crop_box)
+#         sticker = sticker.resize((620,620))
 
-        # Paste the cropped image onto the destination image at (0, 0)
-        template.paste(sticker, (95, 215))
+#         # Paste the cropped image onto the destination image at (0, 0)
+#         template.paste(sticker, (95, 215))
 
     
 def makeMagic(card):
@@ -46,7 +46,7 @@ def makeMagic(card):
     drawName(name, brush)
     drawLevel(brush, type)
     drawEffect(eff, brush, 1)
-    cropImage(card, template)
+    # cropImage(card, template)
     output = "output/" + card[len(card)-1] + ".jpg"
     template.save(output)
 
@@ -72,7 +72,7 @@ def makeMonster(card):
     drawType(types, brush)
     drawEffect(eff, brush)
     drawStats(stats, brush)
-    cropImage(card, template)
+    # cropImage(card, template)
 
     output = "output/" + card[len(card)-1] + ".jpg"
     template.save(output)
@@ -238,10 +238,7 @@ def drawAttribute(attr, brush):
     brush.text((text_x, text_y), attr, font=font, fill="black")
 
 def makeCard(card):
-    if len(card) == 7:
-        makeMonster(card)
-    else:
-        makeMagic(card)
+    print("inside makeCard")
 
 
 def newMain():
@@ -316,6 +313,8 @@ def createTemplate():
     imageBorder(card, width, height)
     # card.show()
     card.save("template.png")
+
+###########################################################################
 
 if __name__ == "__main__":
     newMain()
