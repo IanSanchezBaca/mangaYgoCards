@@ -4,10 +4,11 @@
 from PIL import Image, ImageDraw, ImageFont
 import textwrap
 import os
+import json
 
 ### loading this in early i guess
-# star = Image.open("template/black-star-icon.png")
-# star = star.resize((50,50), Image.Resampling.LANCZOS)
+star = Image.open("../template/black-star-icon.png")
+star = star.resize((50,50), Image.Resampling.LANCZOS)
 
 path = ""
 
@@ -52,18 +53,20 @@ def makeMagic(card):
 
 
 def makeMonster(card):
-    name = card[0]
-    attr = card[1]
-    types = card[2] # vector
-    lvl = int(card[3])
-    stats = card[4] # vector
-    eff = card[5]
+    name = card["name"]
+    attr = card["attribute"]
+    types = card["typeline"] # vector
+    lvl = int(card["level"])
+    atk = card["atk"]
+    deff = card["def"]
+    eff = card["desc"]
     Xyz = None
-
     if len(types) >= 2 and types[1] == "Xyz":
         Xyz = 1
 
-    template = Image.open("template/template.png")
+    # print(name, attr, types, lvl, atk, deff, eff)
+
+    template = Image.open("../template/template.png")
     brush = ImageDraw.Draw(template)
     
     drawAttribute(attr, brush)
@@ -71,17 +74,17 @@ def makeMonster(card):
     drawLevel(template, lvl, Xyz)
     drawType(types, brush)
     drawEffect(eff, brush)
-    drawStats(stats, brush)
+    drawStats(atk, deff, brush)
     # cropImage(card, template)
 
-    output = "output/" + card[len(card)-1] + ".jpg"
+    output = "../output/" + card["name"] + ".jpg"
     template.save(output)
 
-def drawStats(stats, brush):
-    blood = f"ATK {stats[0]}     DEF {stats[1]}"
+def drawStats(atk, deff, brush):
+    blood = f"ATK {atk}     DEF {deff}"
     
     ### Load a bigger font (adjust the path if needed)
-    font = ImageFont.truetype("arial.ttf", 32)  # Use larger size
+    font = ImageFont.truetype("../fonts/Yu-Gi-Oh! Matrix Regular Small Caps 1.ttf", 32)  # Use larger size
     
     ### center
     att_x, att_y = 406, 1120
@@ -118,7 +121,7 @@ def drawEffect(eff, brush, magic=None):
 
     
     ### Load font
-    font_path = "arial.ttf"  # Update if needed
+    font_path = "../fonts/Yu-Gi-Oh! Matrix Regular Small Caps 1.ttf"  # Update if needed
     max_font_size = 70
     min_font_size = 20
 
@@ -150,7 +153,7 @@ def drawType(types, brush):
     typ = "[{}]".format(" / ".join(types))
 
     ### Load a bigger font (adjust the path if needed)
-    font = ImageFont.truetype("arial.ttf", 25)  # Use larger size
+    font = ImageFont.truetype("../fonts/Yu-Gi-Oh! Matrix Regular Small Caps 1.ttf", 25)  # Use larger size
 
     tl_x = 60
     tl_y = 850
@@ -174,7 +177,7 @@ def drawLevel(template, lvl, rank=None):
                 blud = 55 * i
                 template.paste(star, (starx + blud, stary), mask=star)
     else:
-        font = ImageFont.truetype("arial.ttf", 32)  # Use larger size
+        font = ImageFont.truetype("../fonts/Yu-Gi-Oh! Matrix Regular Small Caps 1.ttf", 32)  # Use larger size
         lvl = "(" + lvl + ")"
         template.text((starx - 400, stary + 10), lvl, font=font, fill="black")
 
@@ -190,7 +193,7 @@ def drawName(name, brush):
     best_font = None
 
     ### Load a font (change path if needed)
-    font_path = "arial.ttf"  # Or any .ttf you have
+    font_path = "../fonts/Yu-Gi-Oh! Matrix Regular Small Caps 1.ttf"  # Or any .ttf you have
 
     for size in range(max_font_size, min_font_size - 1, -1):
         font = ImageFont.truetype(font_path, size)
@@ -220,7 +223,7 @@ def drawName(name, brush):
 
 def drawAttribute(attr, brush):
     ### Load a bigger font
-    font = ImageFont.truetype("arial.ttf", 32)  # Use larger size
+    font = ImageFont.truetype("../fonts/Yu-Gi-Oh! Matrix Regular Small Caps 1.ttf", 32)  # Use larger size
     
     ### center
     att_x, att_y = 717, 50
@@ -238,11 +241,18 @@ def drawAttribute(attr, brush):
     brush.text((text_x, text_y), attr, font=font, fill="black")
 
 def makeCard(card):
-    print("inside makeCard")
+    if card["type"] == "Spell Card" or card["type"] == "Trap Card":
+        ### it is a spell/trap
+        makeMagic(card)
+    else:
+        ### it is a monster card
+        makeMonster(card)
 
+def newMain(): ### used for testing
+    with open("utopia.json", "r", encoding="utf-8") as f:
+        data = json.load(f)
 
-def newMain():
-    print("imagetalker")
+    makeCard(data)
 
 
 ##### Below this is only used to make the temp card #######################
