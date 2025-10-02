@@ -17,16 +17,15 @@ def importCards(deck):
     cards = deck
 
     image_names = []
-    for name, count in cards:
-        for _ in range(count):
-            image_names.append(name + ".jpg")
+    for name in cards:
+        image_names.append(name + ".jpg")
 
     cards = image_names
 
-def makeCards():
+def makeCards(ydkName):
     ### Configuration 
     image_folder = "output"  # Folder where card images are stored
-    output_pdf = "proxies.pdf"
+    output_pdf = ydkName + ".pdf"
     card_width = 2.31 * inch  # 59 mm
     card_height = 3.37 * inch  # 86 mm
     cards_per_row = 3

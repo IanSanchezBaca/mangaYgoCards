@@ -1,1 +1,1 @@
-# This folder is used to hold the temporary jpg files that are created
+# This folder is used to hold the finished images

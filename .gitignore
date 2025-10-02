@@ -1,6 +1,7 @@
 talkers/output.txt
 __pycache__
 output/*.jpg
+tempImages/*.jpg
 ./*.pdf
 *.ydk
 VirtualWorld/

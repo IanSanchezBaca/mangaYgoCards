@@ -7,7 +7,7 @@ import os
 import json
 
 ### loading this in early i guess
-star = Image.open("../template/black-star-icon.png")
+star = Image.open("template/black-star-icon.png")
 star = star.resize((50,50), Image.Resampling.LANCZOS)
 
 path = ""
@@ -16,28 +16,28 @@ def changePath(p):
     global path 
     path = p ### comment this back in after tou finish
 
-# def cropImage(card, template):
-#     # print(f"going into {path}")
-#     cardImage = path + "/" + card[len(card) - 1] + ".jpg"
-#     if os.path.isfile(cardImage):
-#         # if path:
-#         # cardImage = path + "/" + card[len(card) - 1] + ".jpg"
-#         sticker = Image.open(cardImage)
-    
-#         # Coordinates: (left, top, right, bottom)
-#         crop_box = (96, 216, 717, 835)
-#         sticker = sticker.crop(crop_box)
-#         sticker = sticker.resize((620,620))
+def setImage(card, template):
+    cardImage = "tempImages/cropped_" + str(card["id"]) + ".jpg"
 
-#         # Paste the cropped image onto the destination image at (0, 0)
-#         template.paste(sticker, (95, 215))
+    # print(cardImage)
+
+    if os.path.isfile(cardImage):
+        # print("it exists")
+   
+        sticker = Image.open(cardImage)
+    
+        # Coordinates: (left, top, right, bottom)
+        crop_box = (96, 216, 717, 835)
+       
+        # Paste the cropped image onto the destination image at (0, 0)
+        template.paste(sticker, (93, 215))
 
     
 def makeMagic(card):
-    name = card[0]
-    magicType = card[1]
-    type = card[2]
-    eff = card[3]
+    name = card["name"]
+    magicType = card["type"] ### attribute
+    type = card["humanReadableCardType"]
+    eff = card["desc"]
     # code = card[4]
 
     template = Image.open("template/template.png")
@@ -47,8 +47,8 @@ def makeMagic(card):
     drawName(name, brush)
     drawLevel(brush, type)
     drawEffect(eff, brush, 1)
-    # cropImage(card, template)
-    output = "output/" + card[len(card)-1] + ".jpg"
+    setImage(card, template)
+    output = "output/" + str(card["id"]) + ".jpg"
     template.save(output)
 
 
@@ -66,7 +66,7 @@ def makeMonster(card):
 
     # print(name, attr, types, lvl, atk, deff, eff)
 
-    template = Image.open("../template/template.png")
+    template = Image.open("template/template.png")
     brush = ImageDraw.Draw(template)
     
     drawAttribute(attr, brush)
@@ -75,16 +75,16 @@ def makeMonster(card):
     drawType(types, brush)
     drawEffect(eff, brush)
     drawStats(atk, deff, brush)
-    # cropImage(card, template)
+    setImage(card, template)
 
-    output = "../output/" + card["name"] + ".jpg"
+    output = "output/" + str(card["id"]) + ".jpg"
     template.save(output)
 
 def drawStats(atk, deff, brush):
     blood = f"ATK {atk}     DEF {deff}"
     
     ### Load a bigger font (adjust the path if needed)
-    font = ImageFont.truetype("../fonts/Yu-Gi-Oh! Matrix Regular Small Caps 1.ttf", 32)  # Use larger size
+    font = ImageFont.truetype("fonts/Yu-Gi-Oh! Matrix Regular Small Caps 1.ttf", 32)  # Use larger size
     
     ### center
     att_x, att_y = 406, 1120
@@ -121,7 +121,7 @@ def drawEffect(eff, brush, magic=None):
 
     
     ### Load font
-    font_path = "../fonts/Yu-Gi-Oh! Matrix Regular Small Caps 1.ttf"  # Update if needed
+    font_path = "fonts/Yu-Gi-Oh! Matrix Regular Small Caps 1.ttf"  # Update if needed
     max_font_size = 70
     min_font_size = 20
 
@@ -153,7 +153,7 @@ def drawType(types, brush):
     typ = "[{}]".format(" / ".join(types))
 
     ### Load a bigger font (adjust the path if needed)
-    font = ImageFont.truetype("../fonts/Yu-Gi-Oh! Matrix Regular Small Caps 1.ttf", 25)  # Use larger size
+    font = ImageFont.truetype("fonts/Yu-Gi-Oh! Matrix Regular Small Caps 1.ttf", 25)  # Use larger size
 
     tl_x = 60
     tl_y = 850
@@ -177,7 +177,7 @@ def drawLevel(template, lvl, rank=None):
                 blud = 55 * i
                 template.paste(star, (starx + blud, stary), mask=star)
     else:
-        font = ImageFont.truetype("../fonts/Yu-Gi-Oh! Matrix Regular Small Caps 1.ttf", 32)  # Use larger size
+        font = ImageFont.truetype("fonts/Yu-Gi-Oh! Matrix Regular Small Caps 1.ttf", 32)  # Use larger size
         lvl = "(" + lvl + ")"
         template.text((starx - 400, stary + 10), lvl, font=font, fill="black")
 
@@ -193,7 +193,7 @@ def drawName(name, brush):
     best_font = None
 
     ### Load a font (change path if needed)
-    font_path = "../fonts/Yu-Gi-Oh! Matrix Regular Small Caps 1.ttf"  # Or any .ttf you have
+    font_path = "fonts/Yu-Gi-Oh! Matrix Regular Small Caps 1.ttf"  # Or any .ttf you have
 
     for size in range(max_font_size, min_font_size - 1, -1):
         font = ImageFont.truetype(font_path, size)
@@ -223,7 +223,7 @@ def drawName(name, brush):
 
 def drawAttribute(attr, brush):
     ### Load a bigger font
-    font = ImageFont.truetype("../fonts/Yu-Gi-Oh! Matrix Regular Small Caps 1.ttf", 32)  # Use larger size
+    font = ImageFont.truetype("fonts/Yu-Gi-Oh! Matrix Regular Small Caps 1.ttf", 32)  # Use larger size
     
     ### center
     att_x, att_y = 717, 50
@@ -244,8 +244,8 @@ def makeCard(card):
     if card["type"] == "Spell Card" or card["type"] == "Trap Card":
         ### it is a spell/trap
         makeMagic(card)
-    else:
-        ### it is a monster card
+    elif not card["type"] == "Link Monster" and not "Pendulum" in card["type"]:
+        ### it is a monster card but not a link nor a pendulum
         makeMonster(card)
 
 def newMain(): ### used for testing

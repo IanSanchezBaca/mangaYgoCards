@@ -1,54 +1,30 @@
 ##################################################
 ### The main page this will prob not handle much
 ##################################################
-import os, ast, argparse
+import os, ast, argparse, sys
 from talkers import filetalker, webtalker, imagetalker, pdfTalker
 
-def main(ydkPath, imgFolder, saveImages):
+def main(ydkPath, saveImages):
     
     ydk = ydkPath
     ydkdeck = filetalker.openFile(ydk)
-
-    ### this checks if they added the path to the images
-    if imgFolder:
-        imagetalker.changePath(imgFolder)
-
-    ### grabs cards from either the "database" or from the website
-    new = []
+    uniqueCards = set(ydkdeck)
+    ### grabs cards from the website
+    
     deck = []
-    for card in ydkdeck[:]:
-        check = databasetalker.check(database, card[0])
-        if check:
-            deck.append(check)
-        else:
-            temp = webtalker.searchCard(card[0])
-            if temp:
-                deck.append(temp)
-                new.append(temp)
-            else:
-                ydkdeck.remove(card)
-
+    for card in uniqueCards:
+        deck.append(webtalker.searchCard(card))
+    
     ### creates the image
     for card in deck:
         imagetalker.makeCard(card)
-        # print(card)
+     
 
     ### will make pdf file here
     pdfTalker.importCards(ydkdeck)
-    pdfTalker.makeCards()
+    pdfTalker.makeCards(sys.argv[1])
 
-    ### cleaning up or not
-    if not saveImages:
-        for filename in os.listdir("output"):
-            if filename.lower().endswith('.jpg'):
-                file_path = os.path.join("output", filename)
-                if os.path.isfile(file_path):
-                    os.remove(file_path)
-
-    ### saves new cards not already in the database
-    if len(new):
-        print("saving new cards!")
-        databasetalker.saveDataBase(new)
+    
         
 
 def testing():
@@ -67,9 +43,12 @@ def testMain():
 
 if __name__ == "__main__":
 
-    testMain()
+    if len(sys.argv) < 3:
+        print("Usage: python3 main.py [ydkfile] [bool wether or not you want to save the images]")
+        exit(-1)
 
-    
+    main(sys.argv[1], sys.argv[2])
+
 
     # ### global variables for flags and stuff
     # parser = argparse.ArgumentParser(description="Manga Style YGO Proxie PDF Generator")

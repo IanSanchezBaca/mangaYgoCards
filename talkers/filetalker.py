@@ -5,6 +5,9 @@
 
 def openFile(filename):
     
+    # print("in filetalker")
+
+
     try:
         file = open(filename, 'r')
     except FileNotFoundError:
@@ -19,6 +22,8 @@ def openFile(filename):
             deck.append(card)
 
     # print(deck) 
+
+    # print("finished filetalker")
 
     return deck
 
