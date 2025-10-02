@@ -24,6 +24,21 @@ def main(ydkPath, saveImages):
     pdfTalker.importCards(ydkdeck)
     pdfTalker.makeCards(sys.argv[1])
 
+    ### clean up
+    tempF = "tempImages/"
+    outputF = "output/"
+    for file in os.listdir(tempF):
+        if file.endswith(".jpg"):
+            file_path = os.path.join(tempF, file)
+            os.remove(file_path)
+    
+    if not int(sys.argv[2]):
+        for file in os.listdir(outputF):
+            if file.endswith(".jpg"):
+                file_path = os.path.join(outputF, file)
+                os.remove(file_path)
+    
+
     
         
 
